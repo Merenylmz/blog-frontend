@@ -3,7 +3,7 @@
 import { RootState } from "@/Redux/store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { comment } from "postcss";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,11 +11,12 @@ import { useSelector } from "react-redux";
 const Details = () => {
     const {id} = useParams();
     const auth = useSelector((state:RootState)=>state.auth.value);
-    const [blog, setBlog] = useState({id: 0, title: "", description: "", fileUrl: "", userId: 0, categoryId: "", viewsCount: 0, comments: [{id:0, commentId:0}]});
+    const [blog, setBlog] = useState({id: 0, title: "", description: "", tags: [], fileUrl: "", userId: 0, categoryId: "", viewsCount: 0, comments: [{id:0, commentId:0}]});
     const [category, setCategory] = useState({id: 0, title: ""});
     const [comments, setComments] = useState([{comment: "", blogId:0, userId:0}]);
     const [user, setUser] = useState([{id: 0, name: "", avatar_url: "", bioTxt: ""}]);
     const [loadingIcon, setLoadingIcon] = useState(false);
+    const router = useRouter();
     useEffect(()=>{
         (async()=>{
             setLoadingIcon(true);
@@ -44,10 +45,11 @@ const Details = () => {
 
     const handleCommentSubmit = async(e:any) =>{
         try {
-
             e.preventDefault();
 
-
+            if (!auth.isAuth) {
+                return router.push("/login");
+            }
             console.log(e.target.comment.value);
             console.log(jwtDecode<{userId: 0}>(auth.token).userId);
             
@@ -102,9 +104,17 @@ const Details = () => {
                         category.id != 0 && 
                         <ul className="mt-3">
                             <li>Category: {category.title}</li>
-                            <li>Views Count: {blog.viewsCount}</li>
+                            <li>Views Count: {blog.viewsCount}</li> 
                         </ul>
                     }
+                    <h3 className="text-center mt-4 mb-4 text-lg lg:text-2xl">Tags</h3>
+                    <div className="mt-4 mb-4 p-5 bg-slate-950 rounded" style={{height: "150px"}}>
+                        {
+                            blog.tags && blog.tags.map(t=>(
+                                <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{t}</span>
+                            ))
+                        }
+                    </div>
                 <section className="not-format">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white mt-6">Comments</h2>
