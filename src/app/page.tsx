@@ -42,11 +42,12 @@ export default function Home() {
   const handleCategorySubmit = async(e:any) =>{
     e.preventDefault();
     setBlogs([]);
-     
+    setLoadingIcon(true);
     const response = await axios.post("http://localhost:8181/api/blogs/category", {
       categories: selectedBox
     });
     const data = response.data;
+    setLoadingIcon(false);
     setBlogs(data.blogs);    
   };
 
@@ -65,16 +66,10 @@ export default function Home() {
       return updatedValues;
     });
     
-
-    
-    // setSelected();
   }
   return (
     <div className="container mx-auto">
-      <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">
-        Identification
-      </h3>
-        <form method="post" onSubmit={handleCategorySubmit}>
+        <form method="post" onSubmit={handleCategorySubmit} className="mt-4">
       <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         {
           categories && categories.map(c=>(
@@ -105,66 +100,8 @@ export default function Home() {
 
       <div className="mx-auto">
         {loadingIcon ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 200 200"
-            className="w-[100px] h-[100px]"
-          >
-            <circle
-              fill="#161270"
-              stroke="#161270"
-              stroke-width="12"
-              r="15"
-              cx="40"
-              cy="100"
-            >
-              <animate
-                attributeName="opacity"
-                calcMode="spline"
-                dur="1.2"
-                values="1;0;1;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="-.4"
-              ></animate>
-            </circle>
-            <circle
-              fill="#161270"
-              stroke="#161270"
-              stroke-width="12"
-              r="15"
-              cx="100"
-              cy="100"
-            >
-              <animate
-                attributeName="opacity"
-                calcMode="spline"
-                dur="1.2"
-                values="1;0;1;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="-.2"
-              ></animate>
-            </circle>
-            <circle
-              fill="#161270"
-              stroke="#161270"
-              stroke-width="12"
-              r="15"
-              cx="160"
-              cy="100"
-            >
-              <animate
-                attributeName="opacity"
-                calcMode="spline"
-                dur="1.2"
-                values="1;0;1;"
-                keySplines=".5 0 .5 1;.5 0 .5 1"
-                repeatCount="indefinite"
-                begin="0"
-              ></animate>
-            </circle>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-[100px] h-[100px]" viewBox="0 0 200 200"><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
+
         ) : (
           <></>
         )}
@@ -173,18 +110,17 @@ export default function Home() {
         {blogs[0] &&
           blogs.map((b) => (
             <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
-              <Link href={`${b.id}`}><img src={`http://localhost:8181/storage/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded"/></Link>
-              <Link
-                href={`${b.id}`}
-                className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-              >
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {b.title}
-                </h5>
-                <p className="font-normal text-gray-700 dark:text-gray-400">
+              <Link href={`${b.id}`}>
+                <img src={`http://localhost:8181/storage/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded-t-lg hover:opacity-50"/>
+                <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {b.title}
+                  </h5>
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
 
-                  {b.description && b.description.substr(0, 35)}
-                </p>
+                    {b.description && b.description.substr(0, 35)}
+                  </p>
+                </div>
               </Link>
             </div>
           ))}

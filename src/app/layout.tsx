@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body>
+        <body className="bg-gray-900">
           <FilteredLink />
           <div className="container mx-auto">
             {children}

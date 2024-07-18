@@ -60,6 +60,7 @@ const Details = () => {
             });
 
             e.target.comment.value = "";
+            alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
         } catch (error) {
             console.log(error);
             
@@ -69,7 +70,7 @@ const Details = () => {
         <div>
             {
                 loadingIcon && 
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="w-[100px] h-[100px]"><circle fill="#161270" stroke="#161270" stroke-width="12" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="1.2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#161270" stroke="#161270" stroke-width="12" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="1.2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#161270" stroke="#161270" stroke-width="12" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="1.2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-[100px] h-[100px]" viewBox="0 0 200 200"><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
             }
         <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased text-white">
         <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">
@@ -96,19 +97,19 @@ const Details = () => {
                 
                     {
                         blog.fileUrl != null && 
-                        <figure><img src={"http://localhost:8181/storage/"+blog.fileUrl} className="rounded" style={{width: "640px", height: "350px"}} />
+                        <figure><img src={"http://localhost:8181/storage/"+blog.fileUrl} className="rounded-lg" style={{width: "672px", height: "350px"}} />
                         </figure>
                     }
                     <figcaption></figcaption>
                     {
                         category.id != 0 && 
-                        <ul className="mt-3">
-                            <li>Category: {category.title}</li>
-                            <li>Views Count: {blog.viewsCount}</li> 
-                        </ul>
+                        <div className="mt-6 mb-5 items-center" style={{display: "flex", justifyContent: "space-around"}}>
+                            <h3 className="font-semibold">Category: {category.title}</h3>
+                            <h3 className="font-semibold">Views Count: {blog.viewsCount}</h3> 
+                        </div>
                     }
-                    <h3 className="text-center mt-4 mb-4 text-lg lg:text-2xl">Tags</h3>
-                    <div className="mt-4 mb-4 p-5 bg-slate-950 rounded" style={{height: "150px"}}>
+                    <h3 className="text-center mt-8 mb-4 text-lg lg:text-2xl font-bold">Tags</h3>
+                    <div className="mt-4 mb-4 p-5 bg-slate-950 rounded-lg" style={{height: "150px"}}>
                         {
                             blog.tags && blog.tags.map(t=>(
                                 <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{t}</span>
