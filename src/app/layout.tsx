@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/Redux/provider";
+import FilteredLink from "./filteredLink";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,12 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-          <body>{children}</body>
+        <body className="bg-gray-900">
+          <FilteredLink />
+          <div className="container mx-auto">
+            {children}
+          </div>
+        </body>
       </html>
     </Providers>
   );
