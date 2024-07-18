@@ -97,7 +97,7 @@ const Details = () => {
                 
                     {
                         blog.fileUrl != null && 
-                        <figure><img src={"http://localhost:8181/storage/"+blog.fileUrl} className="rounded-lg" style={{width: "672px", height: "350px"}} />
+                        <figure><img src={"http://localhost:8181/storage/"+blog.fileUrl} className="rounded-lg  bg-gray-800" style={{width: "672px", height: "350px", objectFit: "fill"}} />
                         </figure>
                     }
                     <figcaption></figcaption>

@@ -19,7 +19,7 @@ const Kvkk = () => {
     }, []);
     return (
         <div>
-            <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-600 dark:border-gray-700 mt-10">
+            <div className="w-full p-4 text-center bg-gray-800 border border-gray-500 rounded-lg shadow sm:p-8 dark:border-gray-800 mt-10">
             {
                 loadingIcon &&
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" className="w-12 h-12"><path fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
@@ -27,8 +27,8 @@ const Kvkk = () => {
             {
                 kvkk && 
                 <>
-                        <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">{kvkk.title}</h5>
-                        <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">{kvkk.description}</p>
+                        <h5 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">{kvkk.title}</h5>
+                        <p className="mb-5 text-base text-white">{kvkk.description}</p>
                         <div className="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
                             <a href="https://github.com/Merenylmz" className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                 <img className="me-3 w-7 h-7 rounded-full" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"/>

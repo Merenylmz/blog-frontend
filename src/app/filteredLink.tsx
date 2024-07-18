@@ -34,10 +34,10 @@ const FilteredLink = () => {
                       <Link href="/" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white" aria-current="page">Home</Link>
                       {
                         auth.isAuth ? <>
-                            <button onClick={()=>logoutOperation()} className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Log out</button>
+                          <button onClick={()=>logoutOperation()} className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Log out</button>
                         </> : <>
-                            <Link href="/login" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Login</Link>
-                            <Link href="/register" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Register</Link>
+                          <Link href="/login" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Login</Link>
+                          <Link href="/register" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Register</Link>
                         </>
                       }
                       <Link href="/policies" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Policies</Link>
@@ -54,11 +54,11 @@ const FilteredLink = () => {
                                 <button type="button" onClick={()=>profilePanel()} className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                   <span className="absolute -inset-1.5"></span>
                                   <span className="sr-only">Open user menu</span>
-                                  <img className="h-8 w-8 rounded-full" src={`${auth.profilePhoto}`} alt=""/>
+                                  <img className="h-8 w-8 rounded-full" src={`${auth.profilePhoto ? auth.profilePhoto : "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg" }`} alt=""/>
                                 </button>
                             </div>
                             <div className={`${profilePanelStatus ? "":"hidden"} absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                                <button onClick={()=>logoutOperation()} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-2">Log out</button>
+                              <button onClick={()=>logoutOperation()} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-2">Log out</button>
                             </div>
                         </div>
                     </>
