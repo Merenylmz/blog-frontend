@@ -1,5 +1,5 @@
 # Clone a Project(Projeyi Klonla)
-If you run this project, you should install nodejs on nodejs install page then open your terminal, write this command "npm i" this command is install package and dependencies.
+If you wanna run this project, you should install nodejs on nodejs install page then open your terminal, write this command "npm i" this command is install package and dependencies.
 "npm run dev" command is run a project
 
 
