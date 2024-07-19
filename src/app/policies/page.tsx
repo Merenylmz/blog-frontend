@@ -33,7 +33,7 @@ const PrivacyPolicy = () => {
                     <Link href="policies/kvkk" className="mb-3 mt-3 text-white hover:text-gray-500">KVKK Document</Link>
                     <div className="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
                         <a href="https://github.com/Merenylmz" className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-                            <img className="me-3 w-7 h-7 rounded-full" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"/>
+                            <img className="me-3 w-7 h-7 rounded-full" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" />
                             <div className="text-left rtl:text-right">
                                 <div className="mb-1 text-xs">This is My Github</div>
                                 <div className="-mt-1 font-sans text-sm font-semibold">Github</div>
