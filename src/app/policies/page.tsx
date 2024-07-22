@@ -2,22 +2,19 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
-
+const privacyPolicyFetcher = (url: string) => axios.get(url).then(res=>res.data);
 const PrivacyPolicy = () => {
-    const [privacy, setPrivacy] = useState({title: "", description: ""});
+    const {data: privacy, error} = useSWR("http://localhost:8181/api/privacy", privacyPolicyFetcher);
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const getPrivacyPolicy = async() =>{
-        setLoadingIcon(true);
-        const response = await axios.get("http://localhost:8181/api/privacy");
-        const data = response.data;
-        setPrivacy(data);
-        setLoadingIcon(false);
 
-    };  
     useEffect(()=>{
-        getPrivacyPolicy();
-    }, []);
+        if (privacy) {
+            setLoadingIcon(false);
+            
+        } else {setLoadingIcon(true);}
+    }, [privacy]);
     return (
         <div>
             <div className="w-full p-4 text-center bg-gray-800 border border-gray-500 rounded-lg shadow sm:p-8 dark:border-gray-800 mt-10">

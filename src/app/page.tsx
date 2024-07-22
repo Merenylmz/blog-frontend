@@ -10,45 +10,42 @@ import Link from "next/link";
 import { getAllCategories } from "@/Redux/actions/CategoryActions";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import useSWR, { mutate } from "swr";
 
-interface IBlog {
-  id: number;
-  title: string;
-  description: string;
-  fileUrl: string;
-  categoryId: number;
-}
+
+const blogFetcher = (url:string) => axios.get(url).then(res=>res.data.blogs);
+const categoryFetcher = (url: string) => axios.get(url).then(res=>res.data);
+
 export default function Home() {
+  const {data: blogs, error: blogError} = useSWR("http://localhost:8181/api/blogs/popular", blogFetcher);
+  const {data: categories, error: categoryError} = useSWR("http://localhost:8181/api/categories", categoryFetcher);
+
   const auth = useSelector((state: RootState) => state.auth.value);
-  const dispatch = useDispatch();
-  const [blogs, setBlogs] = useState<IBlog[]>([]);
+
   const [loadingIcon, setLoadingIcon] = useState(false);
-  const [categories, setCategories] = useState([{ title: "", id: 0 }]);
   const [selectedBox, setSelectedBox] = useState<any[]>([]);
+
   const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      setBlogs([]);
-      setLoadingIcon(true);
-      const blogs = await getAllBlogs();
+  useEffect(()=>{
+    if (blogs && categories) {
       setLoadingIcon(false);
-      setBlogs(blogs);
-      const category = await getAllCategories();
-      setCategories(category);
-    })();
-  }, []);
+    } else {setLoadingIcon(true);}
+  }, [blogs, categories]);
 
-  const handleCategorySubmit = async(e:any) =>{
+
+  const handleCategorySubmit : any = async(e:any) =>{
     e.preventDefault();
-    setBlogs([]);
+    mutate("http://localhost:8181/api/blogs/popular", null, false);
     setLoadingIcon(true);
+
     const response = await axios.post("http://localhost:8181/api/blogs/category", {
       categories: selectedBox
     });
     const data = response.data;
+    mutate("http://localhost:8181/api/blogs/popular", data.blogs, false);//buradaki false değeri veriyi yeniden çekmeyi engeller
+
     setLoadingIcon(false);
-    setBlogs(data.blogs);    
   };
 
   const changeSelected = (e:any) =>{
@@ -72,7 +69,7 @@ export default function Home() {
         <form method="post" onSubmit={handleCategorySubmit} className="mt-4">
       <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         {
-          categories && categories.map(c=>(
+          categories && categories.map((c:any)=>(
             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600" key={c.id}>
               <div className="flex items-center ps-3">
                 <input
@@ -107,8 +104,8 @@ export default function Home() {
         )}
       </div> 
       <div className="flex flex-wrap">
-        {blogs[0] &&
-          blogs.map((b) => (
+        {blogs &&
+          blogs.map((b:any) => (
             <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
               <Link href={`${b.id}`}>
                 <img src={`http://localhost:8181/storage/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded-t-lg hover:opacity-50"/>

@@ -1,22 +1,18 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
-
+const kvkkFetcher = (url:string)=>axios.get(url).then(res=>res.data);
 const Kvkk = () => {
-    const [kvkk, setKvkk] = useState({title: "", description: ""});
+    const {data: kvkk, error} = useSWR("http://localhost:8181/api/kvkk", kvkkFetcher);
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const getKvkk = async() =>{
-        setLoadingIcon(true);
-        const response = await axios.get("http://localhost:8181/api/kvkk");
-        const data = response.data;
-        setKvkk(data);
-        setLoadingIcon(false);
 
-    };  
     useEffect(()=>{
-        getKvkk();
-    }, []);
+        if (kvkk) {
+            setLoadingIcon(false);
+        } else { setLoadingIcon(true) }
+    }, [kvkk]);
     return (
         <div>
             <div className="w-full p-4 text-center bg-gray-800 border border-gray-500 rounded-lg shadow sm:p-8 dark:border-gray-800 mt-10">

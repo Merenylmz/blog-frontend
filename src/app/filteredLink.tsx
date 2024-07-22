@@ -15,8 +15,8 @@ const FilteredLink = () => {
     const auth = useSelector((state:RootState)=>state.auth.value);
     const dispatch = useDispatch();
     const logoutOperation = async() =>{
-        await logoutTask(auth.token);
-        dispatch(logout());
+      await logoutTask(auth.token);
+      dispatch(logout());
     };
     return (
         <div>
