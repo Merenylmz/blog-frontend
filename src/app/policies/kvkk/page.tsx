@@ -5,7 +5,7 @@ import useSWR from "swr";
 
 const kvkkFetcher = (url:string)=>axios.get(url).then(res=>res.data);
 const Kvkk = () => {
-    const {data: kvkk, error} = useSWR("http://localhost:8181/api/kvkk", kvkkFetcher);
+    const {data: kvkk, error} = useSWR(`${process.env.apiLink}/kvkk`, kvkkFetcher);
     const [loadingIcon, setLoadingIcon] = useState(false);
 
     useEffect(()=>{

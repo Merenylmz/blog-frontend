@@ -5,9 +5,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import "./globals.css";
 import { useEffect, useState } from "react";
-import { getAllBlogs } from "@/Redux/actions/BlogAction";
 import Link from "next/link";
-import { getAllCategories } from "@/Redux/actions/CategoryActions";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useSWR, { mutate } from "swr";
@@ -36,16 +34,17 @@ export default function Home() {
 
   const handleCategorySubmit : any = async(e:any) =>{
     e.preventDefault();
-    mutate("http://localhost:8181/api/blogs/popular", null, false);
+    mutate(`${process.env.apiLink}/blogs/popular`, null, false);
     setLoadingIcon(true);
 
-    const response = await axios.post("http://localhost:8181/api/blogs/category", {
+    const response = await axios.post(`${process.env.apiLink}/blogs/category`, {
       categories: selectedBox
     });
     const data = response.data;
-    mutate("http://localhost:8181/api/blogs/popular", data.blogs, false);//buradaki false değeri veriyi yeniden çekmeyi engeller
+    mutate(`${process.env.apiLink}/blogs/popular`, data.blogs, false);//buradaki false değeri veriyi yeniden çekmeyi engeller
 
     setLoadingIcon(false);
+    
   };
 
   const changeSelected = (e:any) =>{
@@ -108,7 +107,7 @@ export default function Home() {
           blogs.map((b:any) => (
             <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
               <Link href={`${b.id}`}>
-                <img src={`http://localhost:8181/storage/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded-t-lg hover:opacity-50"/>
+                <img src={`${process.env.imageLink}/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded-t-lg hover:opacity-50"/>
                 <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {b.title}

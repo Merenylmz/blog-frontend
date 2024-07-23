@@ -15,10 +15,10 @@ const categoryFetcher = (url: string) => axios.get(url).then(res=>res.data);
 const Details = () => {
     
     const {id} = useParams();
-    const {data: blog, error: blogError} = useSWR(`http://localhost:8181/api/blogs/${id}`, blogFetcher);
-    const {data: user, error: userError} = useSWR("http://localhost:8181/api/auth/allusers", (url: string)=>axios.get(url).then(res=>res.data));
-    const {data: comments, error: commentError} = useSWR("http://localhost:8181/api/comments", (url: string)=>axios.get(url).then(res=>res.data.comments));
-    const {data: category, error: categoryError} = useSWR(blog ? `http://localhost:8181/api/categories/${blog.categoryId}` : null, categoryFetcher);
+    const {data: blog, error: blogError} = useSWR(`${process.env.apiLink}/blogs/${id}`, blogFetcher);
+    const {data: user, error: userError} = useSWR(`${process.env.apiLink}/auth/allusers`, (url: string)=>axios.get(url).then(res=>res.data));
+    const {data: comments, error: commentError} = useSWR(`${process.env.apiLink}/comments`, (url: string)=>axios.get(url).then(res=>res.data.comments));
+    const {data: category, error: categoryError} = useSWR(blog ? `${process.env.apiLink}/categories/${blog.categoryId}` : null, categoryFetcher);
     
     
     
@@ -31,7 +31,7 @@ const Details = () => {
         (async()=>{
             if (blog && category && user && comments) {
                 setLoadingIcon(false);
-                await axios.get(`http://localhost:8181/api/blogs/count/${blog.id}`);
+                await axios.get(`${process.env.apiLink}/blogs/count/${blog.id}`);
             } else{
                 setLoadingIcon(true);
             }
@@ -43,20 +43,22 @@ const Details = () => {
         try {
             e.preventDefault();
 
-            if (!auth.isAuth) {
-                return router.push("/login");
-            }
-            console.log(e.target.comment.value);
-            console.log(jwtDecode<{userId: 0}>(auth.token).userId);
+            // if (!auth.isAuth) {
+            //     return router.push("/login");
+            // }
+            // console.log(e.target.comment.value);
+            // console.log(jwtDecode<{userId: 0}>(auth.token).userId);
             
 
-            const response = await axios.post("http://localhost:8181/api/blogs/addcomment/"+blog.id, {
-                comment: e.target.comment.value,
-                userId: jwtDecode<{userId: 0}>(auth.token).userId,
-            });
+            // const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
+            //     comment: e.target.comment.value,
+            //     userId: jwtDecode<{userId: 0}>(auth.token).userId,
+            // });
 
-            e.target.comment.value = "";
-            alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
+            // e.target.comment.value = "";
+            // alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
+            console.log(comments);
+            
         } catch (error) {
             console.log(error);
             
@@ -77,7 +79,7 @@ const Details = () => {
                                 user && user.map((u:any)=>u.id == blog.userId &&(
                                     <address className="flex items-center mb-6 not-italic" key={u.id}>
                                         <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                                            <img className="mr-4 w-16 h-16 rounded-full" src={`http://localhost:8181/storage/${u.avatar_url}`} alt="Jese Leos" />
+                                            <img className="mr-4 w-16 h-16 rounded-full" src={`${process.env.imageLink}/${u.avatar_url}`} alt="Jese Leos" />
                                             <div>
                                                 <a href="#" rel="author" className="text-xl font-bold text-gray-900 dark:text-white">{u.name}</a>
                                                 <p className="text-base text-gray-500 dark:text-gray-400">{u.bioTxt}</p>
@@ -94,7 +96,7 @@ const Details = () => {
                         
                             {
                                 blog.fileUrl != null && 
-                                <figure><img src={"http://localhost:8181/storage/"+blog.fileUrl} className="rounded-lg  bg-gray-800" style={{width: "672px", height: "350px", objectFit: "fill"}} />
+                                <figure><img src={`${process.env.imageLink}/`+blog.fileUrl} className="rounded-lg  bg-gray-800" style={{width: "672px", height: "350px", objectFit: "fill"}} />
                                 </figure>
                             }
                             <figcaption></figcaption>

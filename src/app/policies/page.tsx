@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 const privacyPolicyFetcher = (url: string) => axios.get(url).then(res=>res.data);
 const PrivacyPolicy = () => {
-    const {data: privacy, error} = useSWR("http://localhost:8181/api/privacy", privacyPolicyFetcher);
+    const {data: privacy, error} = useSWR(`${process.env.apiLink}/privacy`, privacyPolicyFetcher);
     const [loadingIcon, setLoadingIcon] = useState(false);
 
     useEffect(()=>{
