@@ -43,21 +43,20 @@ const Details = () => {
         try {
             e.preventDefault();
 
-            // if (!auth.isAuth) {
-            //     return router.push("/login");
-            // }
-            // console.log(e.target.comment.value);
-            // console.log(jwtDecode<{userId: 0}>(auth.token).userId);
+             if (!auth.isAuth) {
+                 return router.push("/login");
+             }
+             console.log(e.target.comment.value);
+             console.log(jwtDecode<{userId: 0}>(auth.token).userId);
             
 
-            // const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
-            //     comment: e.target.comment.value,
-            //     userId: jwtDecode<{userId: 0}>(auth.token).userId,
-            // });
+             const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
+                comment: e.target.comment.value,
+                 userId: jwtDecode<{userId: 0}>(auth.token).userId,
+            });
 
-            // e.target.comment.value = "";
-            // alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
-            console.log(comments);
+             e.target.comment.value = "";
+             alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
             
         } catch (error) {
             console.log(error);
