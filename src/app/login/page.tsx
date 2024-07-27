@@ -15,7 +15,7 @@ const Login = () => {
         e.preventDefault();
         setLoadingIcon(true);
         const response = await loginTask(inputs);
-        if (response.status != "OK") {
+        if (response.data.status != "OK") {
             setLoadingIcon(false);
             return alert("Try Again :)");
         }
@@ -23,7 +23,7 @@ const Login = () => {
         
         dispatch(login({token:response.token, profilePhoto: response[0]}));
         setLoadingIcon(false);
-        response.status == "OK" && router.push("/");
+        response.data.status == "OK" && router.push("/");
     };
     return (
         <div>
