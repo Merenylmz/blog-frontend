@@ -1,27 +1,15 @@
 "use client";
-
 import { RootState } from "@/Redux/store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useParams, useRouter } from "next/navigation";
-import { comment } from "postcss";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useSWR from "swr";
 
-const blogFetcher = (url: string) => axios.get(url).then(res=>res.data[0]);
-const categoryFetcher = (url: string) => axios.get(url).then(res=>res.data);
+const DetailComponent = ({blog, category, user, comments} : {blog:
+    {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: []}, 
+    category: {title: "", id: 0}, user: [], comments: []}) => {
 
-const Details = () => {
-    
-    const {id} = useParams();
-    const {data: blog, error: blogError} = useSWR(`${process.env.apiLink}/blogs/${id}`, blogFetcher);
-    const {data: user, error: userError} = useSWR(`${process.env.apiLink}/auth/allusers`, (url: string)=>axios.get(url).then(res=>res.data));
-    const {data: comments, error: commentError} = useSWR(`${process.env.apiLink}/comments`, (url: string)=>axios.get(url).then(res=>res.data.comments));
-    const {data: category, error: categoryError} = useSWR(blog ? `${process.env.apiLink}/categories/${blog.categoryId}` : null, categoryFetcher);
-    
-    
-    
     const auth = useSelector((state:RootState)=>state.auth.value);
     const [loadingIcon, setLoadingIcon] = useState(false);
     const router = useRouter();
@@ -31,7 +19,6 @@ const Details = () => {
         (async()=>{
             if (blog && category && user && comments) {
                 setLoadingIcon(false);
-                await axios.get(`${process.env.apiLink}/blogs/count/${blog.id}`);
             } else{
                 setLoadingIcon(true);
             }
@@ -43,33 +30,33 @@ const Details = () => {
         try {
             e.preventDefault();
 
-             if (!auth.isAuth) {
-                 return router.push("/login");
-             }
-             console.log(e.target.comment.value);
-             console.log(jwtDecode<{userId: 0}>(auth.token).userId);
-            
+            if (!auth.isAuth) {
+                return router.push("/login");
+            }
+            console.log(e.target.comment.value);
+            console.log(jwtDecode<{userId: 0}>(auth.token).userId);
+        
 
-             const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
+            const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
                 comment: e.target.comment.value,
-                 userId: jwtDecode<{userId: 0}>(auth.token).userId,
+                    userId: jwtDecode<{userId: 0}>(auth.token).userId,
             });
 
-             e.target.comment.value = "";
-             alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
-            
+            e.target.comment.value = "";
+            alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
+        
         } catch (error) {
             console.log(error);
             
         }
     };
     return (
-        <div>
+        <>
             {
                 loadingIcon && 
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-[100px] h-[100px]" viewBox="0 0 200 200"><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
             }
-        <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased text-white">
+            <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased text-white">
             {
                 blog && <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">
                     <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
@@ -169,10 +156,10 @@ const Details = () => {
                     </article>
                 </div>
             }
-        
-    </main>
-    </div>
+
+            </main>
+        </>
     );
 }
 
-export default Details;
+export default DetailComponent;

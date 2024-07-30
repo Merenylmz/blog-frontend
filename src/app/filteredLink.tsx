@@ -6,7 +6,6 @@ import { RootState } from "@/Redux/store";
 import Link from "next/link";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import {} from 
 
 const FilteredLink = () => {
 
@@ -40,7 +39,8 @@ const FilteredLink = () => {
                           <Link href="/register" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Register</Link>
                         </>
                       }
-                      <Link href="/policies" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Policies</Link>
+                      <Link href="/contract/privacy" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Privacy</Link>
+                      <Link href="/contract/kvkk" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Kvkk</Link>
                     </div>
                   </div>
                 </div>

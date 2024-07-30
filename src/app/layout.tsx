@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/Redux/provider";
 import FilteredLink from "./filteredLink";
+import "./globals.css";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
