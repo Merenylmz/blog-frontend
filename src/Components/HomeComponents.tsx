@@ -101,7 +101,7 @@ const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
             <div className="flex flex-wrap">
                 {blogs && blogs[0] &&  
                 blogs.map((b:any) => (
-                    <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
+                    <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" style={{marginBottom: "190px"}} key={b.id}>
                     <Link href={`${b.slug}`}>
                         <Image src={`${imageLink}/`+b.fileUrl} alt="" width={350} height={200} className="rounded-t-lg hover:opacity-50"/>
                         <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
