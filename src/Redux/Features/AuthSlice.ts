@@ -6,7 +6,8 @@ export interface AuthState{
     value: {
         token: string,
         isAuth: boolean,
-        profilePhoto: string|null
+        profilePhoto: string|null,
+
     }
 }
 
@@ -14,7 +15,8 @@ const initialState : AuthState = {
     value: {
         token: "",
         isAuth: false,
-        profilePhoto: ""
+        profilePhoto: "",
+        
     }
 }
 

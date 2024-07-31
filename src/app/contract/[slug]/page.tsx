@@ -4,7 +4,7 @@ import { Params } from "react-router";
 
 const Policies = async({params}: {params: Params}) => {
 
-    const policies = await CommonAPI({url: `http://localhost:8181/api/policies`, parameters: params.slug, method: "GET"});
+    const policies = await CommonAPI({url: `${process.env.apiLink}/policies`, parameters: params.slug, method: "GET"});
 
     return (
         <div>

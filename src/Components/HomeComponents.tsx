@@ -6,6 +6,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { RootState } from "@/Redux/store";
 import CommonAPI from "@/Helpers/CommonAPI";
+import Image from "next/image";
+
+const apiLink = "http://localhost:8181/api";
+const imageLink = "http://localhost:8181/storage";
 
 const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
@@ -25,7 +29,7 @@ const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
         // const response = await axios.post(`${process.env.apiLink}/blogs/category`, {
         //   categories: selectedBox
         // });
-        const {blogs} = await CommonAPI({url: `http://localhost:8181/api/blogs/category`, method: "ADD", inputs: {
+        const {blogs} = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
             categories: selectedBox
         }});
         setBlogs(blogs);
@@ -89,8 +93,7 @@ const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
 
             <div className="mx-auto">
                 {loadingIcon ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-[100px] h-[100px]" viewBox="0 0 200 200"><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
-
+                    <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
                 ) : (
                 <></>
                 )}
@@ -100,7 +103,7 @@ const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
                 blogs.map((b:any) => (
                     <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
                     <Link href={`${b.slug}`}>
-                        <img src={`${process.env.imageLink}/`+b.fileUrl} alt="" className="h-[200px] w-[350px] rounded-t-lg hover:opacity-50"/>
+                        <Image src={`${imageLink}/`+b.fileUrl} alt="" width={350} height={200} className="rounded-t-lg hover:opacity-50"/>
                         <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {b.title}

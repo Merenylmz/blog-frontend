@@ -2,13 +2,18 @@
 import { RootState } from "@/Redux/store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+const apiLink = "http://localhost:8181/api";
+const imageLink = "http://localhost:8181/storage";
+
 const DetailComponent = ({blog, category, user, comments} : {blog:
     {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: []}, 
     category: {title: "", id: 0}, user: [], comments: []}) => {
+        
 
     const auth = useSelector((state:RootState)=>state.auth.value);
     const [loadingIcon, setLoadingIcon] = useState(false);
@@ -37,7 +42,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
             console.log(jwtDecode<{userId: 0}>(auth.token).userId);
         
 
-            const response = await axios.post(`${process.env.apiLink}/blogs/addcomment/`+blog.id, {
+            const response = await axios.post(`${apiLink}/blogs/addcomment/`+blog.id, {
                 comment: e.target.comment.value,
                     userId: jwtDecode<{userId: 0}>(auth.token).userId,
             });
@@ -54,7 +59,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
         <>
             {
                 loadingIcon && 
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-[100px] h-[100px]" viewBox="0 0 200 200"><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="#383EFF" stroke="#383EFF" stroke-width="13" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>
+                <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
             }
             <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased text-white">
             {
@@ -65,7 +70,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                 user && user.map((u:any)=>u.id == blog.userId &&(
                                     <address className="flex items-center mb-6 not-italic" key={u.id}>
                                         <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                                            <img className="mr-4 w-16 h-16 rounded-full" src={`${process.env.imageLink}/${u.avatar_url}`} alt="Jese Leos" />
+                                            <Image className="mr-4 rounded-full" width={64} height={64} src={`${imageLink}/${u.avatar_url}`} alt="" />
                                             <div>
                                                 <a href="#" rel="author" className="text-xl font-bold text-gray-900 dark:text-white">{u.name}</a>
                                                 <p className="text-base text-gray-500 dark:text-gray-400">{u.bioTxt}</p>
@@ -82,7 +87,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                         
                             {
                                 blog.fileUrl != null && 
-                                <figure><img src={`${process.env.imageLink}/`+blog.fileUrl} className="rounded-lg  bg-gray-800" style={{width: "672px", height: "350px", objectFit: "fill"}} />
+                                <figure><Image src={`${imageLink}/`+blog.fileUrl} width={672} height={350} alt="" className="rounded-lg  bg-gray-800" style={{objectFit: "fill"}} />
                                 </figure>
                             }
                             <figcaption></figcaption>
