@@ -36,7 +36,7 @@ const PolicyComponent = ({policies}: {policies: any}) => {
                                 <div className="text-left rtl:text-right">
                                     <div className="mb-1 text-xs">This is My Linkedin</div>
                                     <div className="-mt-1 font-sans text-sm font-semibold">Linkedin</div>
-                                </div>
+                                </div> 
                             </a>
                         </div>
                 </>

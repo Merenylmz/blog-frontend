@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Providers } from "@/Redux/provider";
+import { Providers } from "@/app/Redux/provider";
 import FilteredLink from "./filteredLink";
 import "./globals.css";
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiLink = "http://localhost:8181/api";
+const apiLink = process.env.apiLink;
 
 export const loginTask = async(data: any) =>{
     

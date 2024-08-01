@@ -1,23 +1,30 @@
-# Resmi Node.js 20 görüntüsünü kullanıyoruz
-FROM node:20-alpine
-
-# Uygulama dizinini oluştur ve çalışma dizini olarak ayarla
+FROM node:20.15.0-alpine
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# package.json ve package-lock.json dosyalarını kopyala
-COPY package*.json ./
+COPY . . 
+RUN  yarn install
+RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
 
-# Bağımlılıkları yükle
-RUN npm install
+#ENV NEXT_TELEMETRY_DISABLED 1
 
-# Uygulamanın geri kalanını kopyala
-COPY . .
+# RUN yarn build
 
-# Uygulamanın derlenmesi
-RUN npm run build
+#ENV NODE_ENV production
+#ENV NEXT_TELEMETRY_DISABLED 1
 
-# Uygulamayı başlat
-CMD ["npm", "start"]
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Uygulamanın dışarıya açılacak olan portu
+# Copying source files
+#COPY . /app
+
+RUN chown -R nextjs:nodejs .
+RUN /bin/sh -c /bin/sh -c chown -R nextjs:nodejs /app/.next
+
+USER nextjs
+
 EXPOSE 3000
+
+ENV PORT 3000
+CMD ["yarn", "run", "dev"]

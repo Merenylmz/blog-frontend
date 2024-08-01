@@ -4,15 +4,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { RootState } from "@/Redux/store";
+import { RootState } from "@/app/Redux/store";
 import CommonAPI from "@/Helpers/CommonAPI";
 import Image from "next/image";
 
-const apiLink = "http://localhost:8181/api";
-const imageLink = "http://localhost:8181/storage";
 
-const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
+const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
+    const imageLink = process.env.imageLink;
     // const router = useRouter();
 
     const [blogs, setBlogs] = useState(blog.blogs);
@@ -26,9 +25,10 @@ const HomeComponents = ({blog, category}: {blog: any, category: any}) => {
         setBlogs([]);
         setLoadingIcon(true);
     
-        // const response = await axios.post(`${process.env.apiLink}/blogs/category`, {
-        //   categories: selectedBox
-        // });
+        const response = await axios.post(`${process.env.apiLink}/blogs/category`, {
+          categories: selectedBox
+        });
+        
         const {blogs} = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
             categories: selectedBox
         }});

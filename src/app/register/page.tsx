@@ -1,5 +1,5 @@
 "use client";
-import { registerTask } from "@/Redux/actions/AuthActions";
+import { registerTask } from "@/app/Redux/actions/AuthActions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

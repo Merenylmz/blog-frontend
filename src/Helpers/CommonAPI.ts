@@ -5,11 +5,11 @@ const CommonAPI = async({url, parameters, method, inputs}: {url: string, paramet
     switch (method) {
         case "GET":
             const getRes = await axios.get(`${url}/${parameters ? parameters: ""}`);
-            data = getRes.data;
+            data = await getRes.data;
             break;
         case "ADD":
             const addRes = await axios.post(`${url}`, inputs);
-            data = addRes.data;
+            data = await addRes.data;
             break;
         case "EDIT":
             const editRes = await axios.put(`${url}/${parameters ? parameters: ""}`, inputs);

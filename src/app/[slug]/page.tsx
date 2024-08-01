@@ -1,5 +1,5 @@
 
-import DetailComponent from "@/Components/DetailComponent";
+import DetailComponent from "@/app/components/DetailComponent";
 import CommonAPI from "@/Helpers/CommonAPI";
 
 const Details = async({params}: {params: {slug:string}}) => {

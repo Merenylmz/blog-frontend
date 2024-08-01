@@ -1,5 +1,5 @@
 "use client";
-import { RootState } from "@/Redux/store";
+import { RootState } from "@/app/Redux/store";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const apiLink = "http://localhost:8181/api";
-const imageLink = "http://localhost:8181/storage";
 
+const apiLink = process.env.apiLink;
 const DetailComponent = ({blog, category, user, comments} : {blog:
     {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: []}, 
     category: {title: "", id: 0}, user: [], comments: []}) => {
+    const imageLink = process.env.imageLink;
         
 
     const auth = useSelector((state:RootState)=>state.auth.value);

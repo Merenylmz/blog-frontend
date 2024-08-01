@@ -1,8 +1,8 @@
 "use client";
 
-import { logoutTask } from "@/Redux/actions/AuthActions";
-import { logout } from "@/Redux/Features/AuthSlice";
-import { RootState } from "@/Redux/store";
+import { logoutTask } from "@/app/Redux/actions/AuthActions";
+import { logout } from "@/app/Redux/Features/AuthSlice";
+import { RootState } from "@/app/Redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";

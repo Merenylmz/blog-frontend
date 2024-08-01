@@ -1,7 +1,7 @@
 "use client";
 
-import { loginTask } from "@/Redux/actions/AuthActions";
-import { login } from "@/Redux/Features/AuthSlice";
+import { loginTask } from "@/app/Redux/actions/AuthActions";
+import { login } from "@/app/Redux/Features/AuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
