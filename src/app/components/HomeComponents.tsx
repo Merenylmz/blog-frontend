@@ -1,38 +1,38 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { RootState } from "@/app/Redux/store";
 import CommonAPI from "@/Helpers/CommonAPI";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 
 const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
     const imageLink = process.env.imageLink;
-    // const router = useRouter();
+    const router = useRouter();
+    const queryStr = useSearchParams();
 
     const [blogs, setBlogs] = useState(blog.blogs);
     const [categories, setCategories] = useState(category);
 
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const [selectedBox, setSelectedBox] = useState<any[]>([]);
+    const [selectedBox, setSelectedBox] = useState<any[]>(queryStr.getAll("category"));
 
-    const handleCategorySubmit : any = async(e:any) =>{
-        e.preventDefault();
+    const handleCategorySubmit : any = async() =>{
         setBlogs([]);
         setLoadingIcon(true);
     
-        const response = await axios.post(`${process.env.apiLink}/blogs/category`, {
-          categories: selectedBox
-        });
         
-        const {blogs} = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
+        const res = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
             categories: selectedBox
         }});
-        setBlogs(blogs);
+        console.log(res);
+        
+        setBlogs(res.data.blogs);
         setLoadingIcon(false);
     };
     
@@ -54,15 +54,24 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
     }
 
     useEffect(()=>{
-    if (blogs && categories) {
-        console.log(blogs);
-        
-        setLoadingIcon(false);
-    } else {setLoadingIcon(true);}
+        if (blogs && categories) {
+            setLoadingIcon(false);
+        } else {setLoadingIcon(true);}
     }, [blogs, categories]);
+
+
+    useEffect(() => {
+        if (queryStr.get("category")) {
+            (async()=>{
+                await handleCategorySubmit();
+            })()
+        }
+    
+    }, [queryStr.get("category")])
+    
     return (
         <div>
-            <form method="post" onSubmit={handleCategorySubmit} className="mt-4">
+            <form className="mt-4">
                 <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     {
                     categories && categories.map((c:any)=>(
@@ -86,7 +95,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
                     ))
                     }
                     <li className="w-full border-b border-gray-500 sm:border-b-0 sm:border-r dark:border-gray-900 text-center">
-                        <button className="bg-gray-700 p-3 rounded" type="submit">Listele</button>
+                        <button className="bg-gray-700 p-3 rounded" onClick={handleCategorySubmit} type="button">Listele</button>
                     </li>
                 </ul>
             </form>
