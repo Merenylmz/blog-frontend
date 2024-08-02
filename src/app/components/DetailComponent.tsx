@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -52,10 +53,9 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                     userId: jwtDecode<{userId: 0}>(auth.token).userId,
             });
 
-            alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
-        
+            return toast("Yorumunuz Kontrol sürecine alındı.\nEn Kısa zamanda Yayınlanacaktır.", {autoClose:3000, pauseOnHover:false, theme: "dark", position: "bottom-right"});
         } catch (error) {
-            console.log(error);
+            return toast("Unknown Error; "+error, {autoClose: 3000, theme: "dark", position: "bottom-right"});
         }
     };
     return (
@@ -124,7 +124,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                     <label htmlFor="comment" className="sr-only">Your comment</label>
                                     <textarea id="comment" rows={6} {...register("comment")}
                                         className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                                        placeholder="Write a comment..." required></textarea>
+                                        placeholder="Write a comment..."></textarea>
                                         {errors.comment && <p className="text-red-700">*{errors.comment.message}</p>}
                                 </div>
                                 <button type="submit" className="bg-blue-700 p-2 rounded">

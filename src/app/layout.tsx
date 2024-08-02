@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import { Providers } from "@/app/Redux/provider";
 import FilteredLink from "./filteredLink";
 import "./globals.css";
+import "react-toastify/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,6 +26,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en">
         <body className="bg-gray-900">
+          <ToastContainer/>
           <FilteredLink />
           <div className="container mx-auto">
             {children}

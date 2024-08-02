@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
     name: yup.string().min(2, "Please give long name than 3 letters").required(),
@@ -27,7 +28,7 @@ const Register = () => {
         setLoadingIcon(true);
         const response = await registerTask(data);
         setLoadingIcon(false);
-        response.data == data.name ? router.push("/login") : alert("Try Again :)\n"+response.msg);
+        response.data == data.name ? router.push("/login") : toast("Register Error;\n"+response.message, {autoClose: 3000,theme: "dark",pauseOnHover: false, position: "bottom-right"});
     };
     return (
         <div>

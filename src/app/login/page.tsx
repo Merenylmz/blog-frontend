@@ -1,5 +1,4 @@
 "use client";
-
 import { loginTask } from "@/app/Redux/actions/AuthActions";
 import { login } from "@/app/Redux/Features/AuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import {toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     email: yup.string().required("Email is Required").email("Please enter valid email"),
@@ -27,13 +27,12 @@ const Login = () => {
     
     const loginOperation = async(data:object) =>{
         setLoadingIcon(true);
-        
         const response = await loginTask(data);
-        if (!response.data.name) {
+        if (response.msg) {
             setLoadingIcon(false);
-            return alert("Try Again :)\n"+response.data.msg);
+            toast("Login Error;\n"+response.msg, {autoClose: 3000,theme: "dark", pauseOnHover: false,position: "bottom-right"});
+            return;
         }
-        
         dispatch(login({token:response.token, profilePhoto: response.data.profilePhoto}));
         setLoadingIcon(false);
         response.data.name && router.push("/");
