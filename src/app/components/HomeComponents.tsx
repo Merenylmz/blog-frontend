@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
     const imageLink = process.env.imageLink;
-    const router = useRouter();
+    // const router = useRouter();
     const queryStr = useSearchParams();
 
     const [blogs, setBlogs] = useState(blog.blogs);
@@ -50,7 +50,8 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
             }
             return updatedValues;
         });
-    
+
+        
     }
 
     useEffect(()=>{
