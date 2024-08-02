@@ -1,19 +1,28 @@
 "use client";
 import { RootState } from "@/app/Redux/store";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import * as yup from "yup";
 
+const schema = yup.object().shape({
+    comment: yup.string().min(3).required()
+});
 
 const apiLink = process.env.apiLink;
 const DetailComponent = ({blog, category, user, comments} : {blog:
-    {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: []}, 
+    {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: [{}]}, 
     category: {title: "", id: 0}, user: [], comments: []}) => {
     const imageLink = process.env.imageLink;
         
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        resolver: yupResolver(schema)
+    });
 
     const auth = useSelector((state:RootState)=>state.auth.value);
     const [loadingIcon, setLoadingIcon] = useState(false);
@@ -31,28 +40,22 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
         })()
     }, [blog, category, comments, user]);
 
-    const handleCommentSubmit = async(e:any) =>{
+    const handleCommentSubmit = async(data:{comment: string}) =>{
         try {
-            e.preventDefault();
-
+            
             if (!auth.isAuth) {
                 return router.push("/login");
             }
-            console.log(e.target.comment.value);
-            console.log(jwtDecode<{userId: 0}>(auth.token).userId);
-        
 
-            const response = await axios.post(`${apiLink}/blogs/addcomment/`+blog.id, {
-                comment: e.target.comment.value,
+            await axios.post(`${apiLink}/blogs/addcomment/`+blog.id, {
+                comment: data.comment,
                     userId: jwtDecode<{userId: 0}>(auth.token).userId,
             });
 
-            e.target.comment.value = "";
             alert("Yorumunuz Kontrol Sürecine Alındı. \nEn Kısa zamanda kontrol Edilip Yayınlanıcak \n:)");
         
         } catch (error) {
             console.log(error);
-            
         }
     };
     return (
@@ -70,7 +73,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                 user && user.map((u:any)=>u.id == blog.userId &&(
                                     <address className="flex items-center mb-6 not-italic" key={u.id}>
                                         <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                                            <Image className="mr-4 rounded-full" width={64} height={64} src={`${imageLink}/${u.avatar_url}`} alt="" />
+                                            <Image className="mr-4 rounded-full" width={64} height={64} src={u.avatar_url ? `${imageLink}/${u.avatar_url}` : "profileavatar.jpg"} alt="" />
                                             <div>
                                                 <a href="#" rel="author" className="text-xl font-bold text-gray-900 dark:text-white">{u.name}</a>
                                                 <p className="text-base text-gray-500 dark:text-gray-400">{u.bioTxt}</p>
@@ -87,7 +90,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                         
                             {
                                 blog.fileUrl != null && 
-                                <figure><Image src={`${imageLink}/`+blog.fileUrl} width={672} height={350} alt="" className="rounded-lg  bg-gray-800" style={{objectFit: "fill"}} />
+                                <figure><Image src={blog.fileUrl ? `${imageLink}/`+blog.fileUrl : "/notfound.png"} width={672} height={350} alt="" className="rounded-lg  bg-gray-800" style={{objectFit: "fill"}} />
                                 </figure>
                             }
                             <figcaption></figcaption>
@@ -98,24 +101,31 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                     <h3 className="font-semibold">Views Count: {blog.viewsCount}</h3> 
                                 </div>
                             }
-                            <h3 className="text-center mt-8 mb-4 text-lg lg:text-2xl font-bold">Tags</h3>
-                            <div className="mt-4 mb-4 p-5 bg-slate-950 rounded-lg" style={{height: "150px"}}>
-                                {
-                                    blog.tags && blog.tags.map((t:any, index:number)=>(
-                                        <span key={index} className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{t}</span>
-                                    ))
-                                }
-                            </div>
+                            {
+                                blog.tags[0] && 
+                                <>
+                                    <h3 className="text-center mt-8 mb-4 text-lg lg:text-2xl font-bold">Tags</h3>
+                                    <div className="mt-4 mb-4 p-5 bg-slate-950 rounded-lg" style={{height: "150px"}}>
+                                        {
+                                            blog.tags && blog.tags.map((t:any, index:number)=>(
+                                                <span key={index} className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">{t}</span>
+                                            ))
+                                        }
+                                    </div>
+                                </>
+                            }
+                            
                         <section className="not-format">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white mt-6">Comments</h2>
                             </div>
-                            <form className="mb-6" onSubmit={handleCommentSubmit}>
+                            <form className="mb-6" onSubmit={handleSubmit(handleCommentSubmit)}>
                                 <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                                     <label htmlFor="comment" className="sr-only">Your comment</label>
-                                    <textarea id="comment" rows={6}
+                                    <textarea id="comment" rows={6} {...register("comment")}
                                         className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                                         placeholder="Write a comment..." required></textarea>
+                                        {errors.comment && <p className="text-red-700">*{errors.comment.message}</p>}
                                 </div>
                                 <button type="submit" className="bg-blue-700 p-2 rounded">
                                     Send
@@ -129,9 +139,11 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                                 {
                                                     user && user.filter((u:any)=>u.id == c.userId).map((a:any)=>(
                                                         <>
-                                                            <p className="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white"><img
+                                                            <p className="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white"><Image
                                                                 className="mr-2 w-6 h-6 rounded-full"
-                                                                src={`http://localhost:8181/storage/${a.avatar_url}`}
+                                                                width={24}
+                                                                height={24}
+                                                                src={a.avatar_url ? `${imageLink}/${a.avatar_url}` : "profileavatar.jpg"}
                                                                 alt="Michael Gough" />{a.name}</p>
                                                             <p className="text-sm text-gray-600 dark:text-gray-400"></p>
                                                         </>

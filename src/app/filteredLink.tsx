@@ -55,7 +55,7 @@ const FilteredLink = () => {
                                 <button type="button" onClick={()=>profilePanel()} className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                   <span className="absolute -inset-1.5"></span>
                                   <span className="sr-only">Open user menu</span>
-                                  <Image className="rounded-full" width={35} height={35} src={`${auth.profilePhoto ? auth.profilePhoto : "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg" }`} alt=""/>
+                                  <Image className="rounded-full" width={35} height={35} src={`${auth.profilePhoto?.includes("avatars") ? auth.profilePhoto : "/profileavatar.jpg" }`} alt=""/>
                                 </button>
                             </div>
                             <div className={`${profilePanelStatus ? "":"hidden"} absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">

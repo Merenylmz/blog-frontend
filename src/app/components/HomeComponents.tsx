@@ -103,13 +103,12 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
                 blogs.map((b:any) => (
                     <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
                     <Link href={`${b.slug}`}>
-                        <Image src={`${imageLink}/`+b.fileUrl} alt="" width={350} height={200} className="rounded-t-lg hover:opacity-50"/>
+                        <Image src={b.fileUrl ? `${imageLink}/`+b.fileUrl : "/notfound.png"} alt="" width={350} height={200} className="w-[350px] h-[200px] rounded-t-lg hover:opacity-50"/>
                         <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {b.title}
                         </h5>
                         <p className="font-normal text-gray-700 dark:text-gray-400">
-
                             {b.description && b.description.substr(0, 35)}
                         </p>
                         </div>

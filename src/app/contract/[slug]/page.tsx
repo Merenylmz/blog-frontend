@@ -8,7 +8,7 @@ const Policies = async({params}: {params: Params}) => {
 
     return (
         <div>
-            <PolicyComponent policies={policies}/>
+            <PolicyComponent policies={policies.data}/>
         </div>
     );
 }

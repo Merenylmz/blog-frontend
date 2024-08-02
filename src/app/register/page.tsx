@@ -16,7 +16,6 @@ const schema = yup.object().shape({
 
 const Register = () => {
     const dispatch = useDispatch();
-    const [inputs, setInputs] = useState({name: "", email: "", password: ""});
     const [loadingIcon, setLoadingIcon] = useState(false);
     const router = useRouter();
 
@@ -24,11 +23,11 @@ const Register = () => {
         resolver: yupResolver(schema)
     });
 
-    const registerOperation = async(e:any) =>{
+    const registerOperation = async(data:{name: string}) =>{
         setLoadingIcon(true);
-        const response = await registerTask(inputs);
+        const response = await registerTask(data);
         setLoadingIcon(false);
-        response.status == "OK" ? router.push("/login") : alert("Try Again :)\n"+response.msg);
+        response.data == data.name ? router.push("/login") : alert("Try Again :)\n"+response.msg);
     };
     return (
         <div>
@@ -44,21 +43,21 @@ const Register = () => {
                         <div className="sm:col-span-4 mt-3">
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-white">Username</label>
                             <div className="mt-2">
-                                <input type="text" {...register("name")} onChange={(e)=>setInputs({...inputs, name: e.target.value})} value={inputs.name} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                <input type="text" {...register("name")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                             </div>
                             {errors.name && <p className="text-red-700">*{errors.name.message}</p>}
                         </div>
                         <div className="sm:col-span-4 mt-3">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">Email address</label>
                             <div className="mt-2">
-                                <input type="email" {...register("email")} onChange={(e)=>setInputs({...inputs, email: e.target.value})} value={inputs.email} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                <input type="email" {...register("email")} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                             </div>
                             {errors.email && <p className="text-red-700">*{errors.email.message}</p>}
                         </div>
                         <div className="sm:col-span-4">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">Password</label>
                             <div className="mt-2">
-                                <input type="password" {...register("password")} onChange={(e)=>setInputs({...inputs, password: e.target.value})} value={inputs.password} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                <input type="password" {...register("password")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                             </div>
                             {errors.password && <p className="text-red-700">*{errors.password.message}</p>}
                         </div>

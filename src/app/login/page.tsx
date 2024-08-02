@@ -17,7 +17,7 @@ const schema = yup.object().shape({
 
 const Login = () => {
     const dispatch = useDispatch();
-    const [inputs, setInputs] = useState({email: "", password: ""});
+    // const [inputs, setInputs] = useState({email: "", password: ""});
     const [loadingIcon, setLoadingIcon] = useState(false);
     const router = useRouter();
 
@@ -25,17 +25,18 @@ const Login = () => {
         resolver: yupResolver(schema)
     });
     
-    const loginOperation = async(e:any) =>{
+    const loginOperation = async(data:object) =>{
         setLoadingIcon(true);
-        const response = await loginTask(inputs);
-        if (response.data.status != "OK") {
+        
+        const response = await loginTask(data);
+        if (!response.data.name) {
             setLoadingIcon(false);
             return alert("Try Again :)\n"+response.data.msg);
         }
         
         dispatch(login({token:response.token, profilePhoto: response.data.profilePhoto}));
         setLoadingIcon(false);
-        response.data.status == "OK" && router.push("/");
+        response.data.name && router.push("/");
     };
     return (
         <div>
@@ -51,14 +52,14 @@ const Login = () => {
                         <div className="sm:col-span-4 mt-3">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">Email address</label>
                             <div className="mt-2">
-                                <input type="email" {...register("email")} onChange={(e)=>setInputs({...inputs, email: e.target.value})} value={inputs.email} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                <input type="email" {...register("email")} autoComplete="email" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                             </div>
                             {errors.email && <p className="text-red-700">*{errors.email.message}</p>}
                         </div>
                         <div className="sm:col-span-4">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">Password</label>
                             <div className="mt-2">
-                                <input type="password" {...register("password")} onChange={(e)=>setInputs({...inputs, password: e.target.value})} value={inputs.password} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                <input type="password" {...register("password")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                             </div>
                             {errors.password && <p className="text-red-700">*{errors.password.message}</p>}
                         </div>
