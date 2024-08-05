@@ -3,7 +3,6 @@ import axios from "axios";
 const apiLink = process.env.apiLink;
 
 export const loginTask = async(data: any) =>{
-    
     const response = await axios.post(`${apiLink}/auth/login`, data);
     const resData = response.data;
     

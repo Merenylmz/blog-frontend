@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
-import {toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
     email: yup.string().required("Email is Required").email("Please enter valid email"),

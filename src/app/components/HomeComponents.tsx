@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
     const imageLink = process.env.imageLink;
-    // const router = useRouter();
+    const router = useRouter();
     const queryStr = useSearchParams();
 
     const [blogs, setBlogs] = useState(blog.blogs);
@@ -26,6 +26,8 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
         setBlogs([]);
         setLoadingIcon(true);
     
+        let query = selectedBox.map((id)=>`category=${id}`).join('&');
+        router.push(`/?${query}`);
         
         const res = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
             categories: selectedBox
@@ -60,7 +62,6 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
         } else {setLoadingIcon(true);}
     }, [blogs, categories]);
 
-
     useEffect(() => {
         if (queryStr.get("category")) {
             (async()=>{
@@ -69,7 +70,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
         }
     
     }, [queryStr.get("category")])
-    
+
     return (
         <div>
             <form className="mt-4">
