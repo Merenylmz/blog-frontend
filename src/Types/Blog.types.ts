@@ -1,3 +1,4 @@
+import CommentTypes from "./Comment.types";
 type BlogTypes = {
     id: number,
     title: string,
@@ -7,7 +8,7 @@ type BlogTypes = {
     userId: number,
     isitActive: boolean,
     categoryId: number,
-    comments: any[],
+    comments: CommentTypes[],
     tags: any[],
     viewsCount: number
 };
