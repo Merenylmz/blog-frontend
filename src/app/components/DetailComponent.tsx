@@ -1,5 +1,9 @@
 "use client";
 import { RootState } from "@/app/Redux/store";
+import BlogTypes from "@/Types/Blog.types";
+import CategoryTypes from "@/Types/Category.types";
+import CommentTypes from "@/Types/Comment.types";
+import UserTypes from "@/Types/User.types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -16,9 +20,7 @@ const schema = yup.object().shape({
 });
 
 const apiLink = process.env.apiLink;
-const DetailComponent = ({blog, category, user, comments} : {blog:
-    {id:0, title: "", description: "", userId: 0, fileUrl: "", viewsCount: 0, tags: [{}]}, 
-    category: {title: "", id: 0}, user: [], comments: []}) => {
+const DetailComponent = ({blog, category, user, comments} : {blog: BlogTypes, category: CategoryTypes, user: Array<UserTypes>, comments: Array<CommentTypes>}) => {
     const imageLink = process.env.imageLink;
         
     const {register, handleSubmit, formState: {errors}} = useForm({
@@ -70,7 +72,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                     <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
                         <header className="mb-4 lg:mb-6 not-format">
                             {
-                                user && user.map((u:any)=>u.id == blog.userId &&(
+                                user && user.map((u:UserTypes)=>u.id == blog.userId &&(
                                     <address className="flex items-center mb-6 not-italic" key={u.id}>
                                         <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                                             <Image className="mr-4 rounded-full" width={64} height={64} src={u.avatar_url ? `${imageLink}/${u.avatar_url}` : "profileavatar.jpg"} alt="" />
@@ -132,18 +134,18 @@ const DetailComponent = ({blog, category, user, comments} : {blog:
                                 </button>
                             </form>
                             {
-                                comments && comments.map((c:any)=>c.blogId == blog.id &&(
+                                comments && comments.map((c:CommentTypes)=>c.blogId == blog.id &&(
                                     <article className="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900" key={c.blogId}>
                                         <footer className="flex justify-between items-center mb-2">
                                             <div className="flex items-center">
                                                 {
-                                                    user && user.filter((u:any)=>u.id == c.userId).map((a:any)=>(
+                                                    user && user.filter((u:UserTypes)=>u.id == c.userId).map((a:UserTypes)=>(
                                                         <>
                                                             <p className="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white"><Image
                                                                 className="mr-2 w-6 h-6 rounded-full"
                                                                 width={24}
                                                                 height={24}
-                                                                src={a.avatar_url ? `${imageLink}/${a.avatar_url}` : "profileavatar.jpg"}
+                                                                src={a.avatar_url ? `${imageLink}/${a.avatar_url}` : "/profileavatar.jpg"}
                                                                 alt="Michael Gough" />{a.name}</p>
                                                             <p className="text-sm text-gray-600 dark:text-gray-400"></p>
                                                         </>

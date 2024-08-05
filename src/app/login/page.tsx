@@ -25,7 +25,7 @@ const Login = () => {
         resolver: yupResolver(schema)
     });
     
-    const loginOperation = async(data:object) =>{
+    const loginOperation = async(data:{email: string, password: string}) =>{
         setLoadingIcon(true);
         const response = await loginTask(data);
         if (response.msg) {

@@ -24,7 +24,7 @@ const Register = () => {
         resolver: yupResolver(schema)
     });
 
-    const registerOperation = async(data:{name: string}) =>{
+    const registerOperation = async(data:{name: string, email: string, password: string}) =>{
         setLoadingIcon(true);
         const response = await registerTask(data);
         setLoadingIcon(false);

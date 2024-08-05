@@ -9,8 +9,11 @@ import CommonAPI from "@/Helpers/CommonAPI";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
+import BlogTypes from "@/Types/Blog.types";
+import CategoryTypes from "@/Types/Category.types";
 
-const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, apiLink: string}) => {
+
+const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, category: Array<CategoryTypes>, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
     const imageLink = process.env.imageLink;
     const router = useRouter();
@@ -20,9 +23,9 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
     const [categories, setCategories] = useState(category);
 
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const [selectedBox, setSelectedBox] = useState<any[]>(queryStr.getAll("category"));
+    const [selectedBox, setSelectedBox] = useState<string[]>(queryStr.getAll("category"));
 
-    const handleCategorySubmit : any = async() =>{
+    const handleCategorySubmit = async() =>{
         setBlogs([]);
         setLoadingIcon(true);
     
@@ -38,14 +41,14 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
         setLoadingIcon(false);
     };
     
-    const changeSelected = (e:any) =>{
+    const changeSelected = (e:{target:{checked: boolean, value: any}}) =>{
 
         let value = e.target.checked ? e.target.value : '';
         
         setSelectedBox((prevValues) => {
             let updatedValues = prevValues.slice();
             if (e.target.checked) {
-                updatedValues.push(Number.parseInt(value));
+                updatedValues.push(value);
             } else {
                 const index = updatedValues.findIndex((a)=>a == e.target.value);
                 updatedValues.splice(index, 1);
@@ -111,7 +114,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: any, category: any, ap
             </div> 
             <div className="flex flex-wrap">
                 {blogs && blogs[0] &&  
-                blogs.map((b:any) => (
+                blogs.map((b:BlogTypes) => (
                     <div className="mt-6 me-4 w-[350px] h-[150px] mb-40" key={b.id}>
                     <Link href={`${b.slug}`}>
                         <Image src={b.fileUrl ? `${imageLink}/`+b.fileUrl : "/notfound.png"} alt="" width={350} height={200} className="w-[350px] h-[200px] rounded-t-lg hover:opacity-50"/>

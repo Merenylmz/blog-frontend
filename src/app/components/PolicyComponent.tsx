@@ -1,10 +1,11 @@
 "use client";
+import PolicyTypes from "@/Types/Policy.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const PolicyComponent = ({policies}: {policies: any}) => {
+const PolicyComponent = ({policies}: {policies: PolicyTypes}) => {
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const [policy, setPolicy] = useState(policies)
+    const [policy, setPolicy] = useState<PolicyTypes>(policies)
 
     useEffect(()=>{
         if (policy) {
