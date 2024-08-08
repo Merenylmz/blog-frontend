@@ -11,11 +11,12 @@ import { useSearchParams } from "next/navigation";
 
 import BlogTypes from "@/Types/Blog.types";
 import CategoryTypes from "@/Types/Category.types";
+import LoadingComponent from "./LoadingComponent";
 
 
 const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, category: Array<CategoryTypes>, apiLink: string}) => {
     const auth = useSelector((state: RootState) => state.auth.value);
-    const imageLink = process.env.imageLink;
+    const imageLink = process.env.NEXT_PUBLIC_API_IMAGE;
     const router = useRouter();
     const queryStr = useSearchParams();
 
@@ -23,19 +24,21 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
     const [categories, setCategories] = useState(category);
 
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const [selectedBox, setSelectedBox] = useState<string[]>(queryStr.getAll("category"));
+    const [selectedBox, setSelectedBox] = useState<string[]>((queryStr.get("category") ? (queryStr.get("category")?.split(",")) as string[]: []));
 
     const handleCategorySubmit = async() =>{
         setBlogs([]);
         setLoadingIcon(true);
     
-        let query = selectedBox.map((id)=>`category=${id}`).join('&');
-        router.push(`/?${query}`);
+
+        let query = selectedBox.map((slug)=>`${slug}`).join(',');
+        router.push(`/?category=${query}`);
+
+        console.log(selectedBox);
         
         const res = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
             categories: selectedBox
         }});
-        console.log(res);
         
         setBlogs(res.data.blogs);
         setLoadingIcon(false);
@@ -47,6 +50,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
         
         setSelectedBox((prevValues) => {
             let updatedValues = prevValues.slice();
+            console.log(prevValues);
             if (e.target.checked) {
                 updatedValues.push(value);
             } else {
@@ -79,13 +83,13 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
             <form className="mt-4">
                 <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     {
-                    categories && categories.map((c:any)=>(
+                    categories && categories.map((c:CategoryTypes)=>(
                         <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600" key={c.id}>
                         <div className="flex items-center ps-3">
                             <input
                             id="categoryCheck"
                             type="checkbox"
-                            value={c.id}
+                            value={c.slug}
                             onChange={changeSelected}
                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-lg focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             />
@@ -106,11 +110,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
             </form>
 
             <div className="mx-auto">
-                {loadingIcon ? (
-                    <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
-                ) : (
-                <></>
-                )}
+               <LoadingComponent loadingIcon={loadingIcon}/>
             </div> 
             <div className="flex flex-wrap">
                 {blogs && blogs[0] &&  

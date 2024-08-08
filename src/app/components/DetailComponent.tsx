@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as yup from "yup";
+import LoadingComponent from "./LoadingComponent";
 
 const schema = yup.object().shape({
     comment: yup.string().min(3).required()
@@ -62,10 +63,7 @@ const DetailComponent = ({blog, category, user, comments} : {blog: BlogTypes, ca
     };
     return (
         <>
-            {
-                loadingIcon && 
-                <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
-            }
+            <LoadingComponent loadingIcon={loadingIcon}/>
             <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased text-white">
             {
                 blog && <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">

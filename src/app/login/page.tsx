@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { toast } from 'react-toastify';
+import LoadingComponent from "../components/LoadingComponent";
 
 const schema = yup.object().shape({
     email: yup.string().required("Email is Required").email("Please enter valid email"),
@@ -27,23 +28,21 @@ const Login = () => {
     
     const loginOperation = async(data:{email: string, password: string}) =>{
         setLoadingIcon(true);
+        
         const response = await loginTask(data);
         if (response.msg) {
             setLoadingIcon(false);
-            toast("Login Error;\n"+response.msg, {autoClose: 3000,theme: "dark", pauseOnHover: false,position: "bottom-right"});
+            toast("Login Error;\n"+response.msg, {autoClose: 3000, theme: "dark", pauseOnHover: false,position: "bottom-right"});
             return;
         }
+        
         dispatch(login({token:response.token, profilePhoto: response.data.profilePhoto}));
         setLoadingIcon(false);
         response.data.name && router.push("/");
     };
     return (
         <div>
-            {
-                loadingIcon && <p>
-                    <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
-                </p>
-            } 
+            <LoadingComponent loadingIcon={loadingIcon} />
            <div className="flex items-center justify-center min-h-screen border-solid">
                 <div className="p-10 rounded-lg shadow-lg shadow-slate-800 w-[350px]  text-center border-2 border-gray-700">
                     <form method="post" onSubmit={handleSubmit(loginOperation)}>

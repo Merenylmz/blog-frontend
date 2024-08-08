@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiLink = process.env.apiLink;
+const apiLink = process.env.NEXT_PUBLIC_API_URL;
 
 type LoginAndRegisterType = {
     name?: string,
@@ -9,6 +9,7 @@ type LoginAndRegisterType = {
 }
 
 export const loginTask = async(data: LoginAndRegisterType) =>{
+    
     const response = await axios.post(`${apiLink}/auth/login`, data);
     const resData = response.data;
     
@@ -21,7 +22,6 @@ export const registerTask = async(data: LoginAndRegisterType) =>{
     return resData;
 };
 export const logoutTask = async(token: string) =>{
-    
     const response = await axios.get(`${apiLink}/auth/logout?token=`+token);
     const resData = response.data;
 

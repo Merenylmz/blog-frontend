@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import LoadingComponent from "../components/LoadingComponent";
 
 const schema = yup.object().shape({
     name: yup.string().min(2, "Please give long name than 3 letters").required(),
@@ -32,12 +33,9 @@ const Register = () => {
     };
     return (
         <div>
-            {
-                loadingIcon && <p>
-                    <Image src={`/loadingLogo.svg`} width={100} height={100} alt=""></Image>
-                </p>
-            } 
-           <div className="flex items-center justify-center min-h-screen border-solid text-white">
+            <LoadingComponent loadingIcon={loadingIcon} />
+
+            <div className="flex items-center justify-center min-h-screen border-solid text-white">
                 <div className="p-10 rounded-lg shadow-lg shadow-slate-800 w-[350px] text-center border-2 border-gray-700 ">
                     <form method="post" onSubmit={handleSubmit(registerOperation)}>
                         <h1 className="text-2xl font-bold ">Register Page</h1>

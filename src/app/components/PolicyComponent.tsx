@@ -2,6 +2,7 @@
 import PolicyTypes from "@/Types/Policy.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import LoadingComponent from "./LoadingComponent";
 
 const PolicyComponent = ({policies}: {policies: PolicyTypes}) => {
     const [loadingIcon, setLoadingIcon] = useState(false);
@@ -15,10 +16,7 @@ const PolicyComponent = ({policies}: {policies: PolicyTypes}) => {
     return (
         <>
             <div className="w-full p-4 text-center bg-gray-800 border border-gray-500 rounded-lg shadow sm:p-8 dark:border-gray-800 mt-10">
-            {
-                loadingIcon &&
-                <Image width={48} height={48} src={`/policyLoadinglogo.svg`} alt="loading..."></Image>
-            }
+            <LoadingComponent loadingIcon={loadingIcon} image="policyLoadingLogo.svg"/>
             {
                 policy && 
                 <>

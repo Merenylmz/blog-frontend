@@ -8,7 +8,7 @@ const Home = async() => {
   const categories = await CommonAPI({url: `${process.env.apiLink}/categories`, method: "GET"});
   return (
     <div className="container mx-auto">
-      <HomeComponents blog={blogs.data} category={categories.data} apiLink={process.env.localApiLink!}/>
+      <HomeComponents blog={blogs.data} category={categories.data} apiLink={process.env.NEXT_PUBLIC_API_URL!}/>
     </div>
   );
 }

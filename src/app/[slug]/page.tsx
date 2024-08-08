@@ -1,6 +1,9 @@
 
 import DetailComponent from "@/app/components/DetailComponent";
 import CommonAPI from "@/Helpers/CommonAPI";
+import { Metadata } from "next";
+import Head from "next/head";
+import HeadComponent from "../head";
 
 const Details = async({params}: {params: {slug:string}}) => {
     
@@ -10,9 +13,12 @@ const Details = async({params}: {params: {slug:string}}) => {
     const comments = await CommonAPI({url: `${process.env.apiLink}/comments`, method: "GET"})
 
     return (
-        <div>
-            <DetailComponent blog={blog.data} user={user.data} category={category.data} comments={comments.data.comments} />
-        </div>
+        <>
+            <HeadComponent title={blog.data.title+" - Details"}/>
+            <div>
+                <DetailComponent blog={blog.data} user={user.data} category={category.data} comments={comments.data.comments} />
+            </div>
+        </>
     );
 }
 
