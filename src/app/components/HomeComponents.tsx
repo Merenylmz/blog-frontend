@@ -26,19 +26,21 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
     const [loadingIcon, setLoadingIcon] = useState(false);
     const [selectedBox, setSelectedBox] = useState<string[]>((queryStr.get("category") ? (queryStr.get("category")?.split(",")) as string[]: []));
 
-    const handleCategorySubmit = async() =>{
+    const setQuery = () =>{
+        if (!selectedBox[0]) {
+            router.push(`/`);
+            return alert("Please select another checkbox");
+        }
         setBlogs([]);
         setLoadingIcon(true);
-    
 
         let query = selectedBox.map((slug)=>`${slug}`).join(',');
         router.push(`/?category=${query}`);
-
-        console.log(selectedBox);
+    }
+    const handleCategorySubmit = async() =>{
+        let query = selectedBox.map((slug)=>`${slug}`).join(',');
         
-        const res = await CommonAPI({url: `${apiLink}/blogs/category`, method: "ADD", inputs: {
-            categories: selectedBox
-        }});
+        const res = await CommonAPI({url: `${apiLink}/blogs/category`, method: "GET", parameters:`/?category=${query}`});
         
         setBlogs(res.data.blogs);
         setLoadingIcon(false);
@@ -104,7 +106,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
                     ))
                     }
                     <li className="w-full border-b border-gray-500 sm:border-b-0 sm:border-r dark:border-gray-900 text-center">
-                        <button className="bg-gray-700 p-3 rounded" onClick={handleCategorySubmit} type="button">Listele</button>
+                        <button className="bg-gray-700 p-3 rounded" onClick={setQuery} type="button">Listele</button>
                     </li>
                 </ul>
             </form>
