@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { RootState } from "@/app/Redux/store";
@@ -49,10 +49,9 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
     const changeSelected = (e:{target:{checked: boolean, value: any}}) =>{
 
         let value = e.target.checked ? e.target.value : '';
-        
+
         setSelectedBox((prevValues) => {
             let updatedValues = prevValues.slice();
-            console.log(prevValues);
             if (e.target.checked) {
                 updatedValues.push(value);
             } else {
@@ -73,6 +72,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
 
     useEffect(() => {
         if (queryStr.get("category")) {
+            // setCheckedSelectBox(queryStr.get("category")?.split(","));
             (async()=>{
                 await handleCategorySubmit();
             })()
@@ -92,6 +92,7 @@ const HomeComponents = ({blog, category, apiLink}: {blog: {blogs: BlogTypes[]}, 
                             id="categoryCheck"
                             type="checkbox"
                             value={c.slug}
+                            checked={selectedBox?.includes(c.slug)}
                             onChange={changeSelected}
                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-lg focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             />

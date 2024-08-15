@@ -3,8 +3,13 @@ import HomeComponents from "@/app/components/HomeComponents";
 import CommonAPI from "@/Helpers/CommonAPI";
 
 
-const Home = async() => {
-  const blogs = await CommonAPI({url: `${process.env.apiLink}/blogs/popular`, method: "GET"});
+const Home = async(props:any) => {
+  let blogs = [];
+  if (props.searchParams.category) {
+    blogs = await CommonAPI({url: `${process.env.apiLink}/blogs/category`, method: "GET", parameters:`/?category=${props.searchParams.category}`});
+  } else{
+    blogs = await CommonAPI({url: `${process.env.apiLink}/blogs/popular`, method: "GET"});
+  }
   const categories = await CommonAPI({url: `${process.env.apiLink}/categories`, method: "GET"});
   return (
     <div className="container mx-auto">
